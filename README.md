@@ -156,7 +156,7 @@ jupyter notebook E-Commerce_Product_Delivery_Prediction.ipynb
 
 ## 👤 Author
 
-**[Your Name]**
+**NIKIT**
 Data Scientist | Machine Learning Practitioner
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0A66C2?style=flat-square&logo=linkedin&logoColor=white)](#)
