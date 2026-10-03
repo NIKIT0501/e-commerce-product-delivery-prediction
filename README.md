@@ -1,172 +1,175 @@
-# 📦 E-Commerce Product Delivery Prediction
+# E-Commerce Product Delivery Prediction
 
-<div align="center">
+An end-to-end machine learning project to analyze shipment performance, predict delivery delays, and translate model outputs into actionable business insights.
 
-**Predicting on-time delivery for an international e-commerce company using machine learning**
+## Project Overview
 
-![Python](https://img.shields.io/badge/Python-3.9+-3776AB?style=flat-square&logo=python&logoColor=white)
-![Pandas](https://img.shields.io/badge/Pandas-Data%20Wrangling-150458?style=flat-square&logo=pandas&logoColor=white)
-![scikit-learn](https://img.shields.io/badge/scikit--learn-Modeling-F7931E?style=flat-square&logo=scikit-learn&logoColor=white)
-![Seaborn](https://img.shields.io/badge/Seaborn-Visualization-4C72B0?style=flat-square)
-![Status](https://img.shields.io/badge/Status-Complete-brightgreen?style=flat-square)
-![License](https://img.shields.io/badge/License-MIT-lightgrey?style=flat-square)
+Late deliveries can reduce customer satisfaction, increase support requests, and create operational inefficiencies. This project uses historical shipment data to classify whether an e-commerce order is likely to arrive late or on time.
 
-</div>
+The project covers data quality checks, exploratory data analysis (EDA), feature preprocessing, model training, hyperparameter tuning, model evaluation, and business recommendations.
 
-<p align="center">
-  <img src="https://globalskylogistics.com/wp-content/uploads/2018/04/THE-CHANGING-NATURE-OF-E-COMMERCE-DELIVERY.jpg" alt="E-commerce delivery" width="720">
-</p>
+**Objective:** Explore the factors associated with delivery outcomes and build a classification model that can help identify shipments requiring further attention.
 
----
+## Key Highlights
 
-## 📌 Overview
+- Analyzed **10,999 shipment records** from an e-commerce delivery dataset.
+- Performed data cleaning checks and exploratory data analysis using Python.
+- Examined shipment characteristics, including product weight, product cost, discounts, customer-care calls, and prior purchases.
+- Trained and compared four classification algorithms: Logistic Regression, Decision Tree, Random Forest, and K-Nearest Neighbors (KNN).
+- Used GridSearchCV with 5-fold cross-validation to tune the Decision Tree and Random Forest models.
+- Evaluated model performance using accuracy, precision, recall, F1-score, and a confusion matrix.
+- Translated analytical findings into potential operational recommendations.
 
-Late deliveries erode customer trust and drive up support costs. This project builds an **end-to-end classification pipeline** that predicts whether a shipment from an international e-commerce electronics retailer will arrive **on time or late**, and surfaces the operational and behavioral drivers behind delivery performance.
+## Business Problem
 
-The workflow covers the full data science lifecycle: data cleaning → exploratory data analysis → feature encoding → model training with hyperparameter tuning → model comparison → business insights.
+E-commerce businesses need to understand which shipment characteristics are associated with late delivery so that they can investigate risks and improve fulfillment operations.
 
-**Business questions answered:**
-- Which shipments are at risk of arriving late — *before* they're dispatched?
-- Does warehouse location, shipping mode, or product type actually affect delivery time?
-- What customer behaviors (calls, ratings, repeat purchases) correlate with delivery outcomes?
-- Where should the business focus to improve on-time delivery rates?
+This project explores the following questions:
 
----
+1. Which product and customer-related features are associated with delivery outcomes?
+2. How do product weight, cost, and discount relate to on-time delivery?
+3. Do shipment mode and warehouse location show differences in delivery performance?
+4. How do the classification models compare when identifying late deliveries?
+5. How could the findings support delivery monitoring and operational decisions?
 
-## 🗂️ Repository Contents
+## Dataset
 
-| File | Description |
-|---|---|
-| `E-Commerce_Product_Delivery_Prediction.ipynb` | Full Jupyter notebook — EDA, preprocessing, modeling, evaluation |
-| `E-Commerce_Product_Delivery_Prediction.pdf` | Exported notebook report (static, shareable version) |
-| `E_Commerce.csv` | Raw dataset (10,999 shipment records) |
-| `README.md` | You are here |
-
----
-
-## 🧾 Dataset
-
-**10,999 shipments · 12 features · binary target**
+The project uses `E_Commerce.csv`, containing 10,999 shipment records. The target column is `Reached.on.Time_Y.N`, where `1` represents a shipment that did not arrive on time and `0` represents an on-time shipment.
 
 | Feature | Description |
 |---|---|
-| `Warehouse_block` | Warehouse the order shipped from (A–E) |
-| `Mode_of_Shipment` | Ship, Flight, or Road |
-| `Customer_care_calls` | Number of inquiry calls made about the shipment |
-| `Customer_rating` | 1 (worst) – 5 (best) |
-| `Cost_of_the_Product` | Product cost in USD |
-| `Prior_purchases` | Customer's purchase history count |
-| `Product_importance` | Low / Medium / High |
-| `Gender` | Customer gender |
-| `Discount_offered` | % discount applied |
-| `Weight_in_gms` | Product weight |
-| `Reached.on.Time_Y.N` | **Target** — 1 = late, 0 = on time |
+| `Warehouse_block` | Warehouse category |
+| `Mode_of_Shipment` | Shipping mode: Ship, Flight, or Road |
+| `Customer_care_calls` | Number of customer-care calls |
+| `Customer_rating` | Customer rating from 1 to 5 |
+| `Cost_of_the_Product` | Product cost |
+| `Prior_purchases` | Number of previous purchases |
+| `Product_importance` | Low, Medium, or High |
+| `Gender` | Customer gender category |
+| `Discount_offered` | Discount offered on the product |
+| `Weight_in_gms` | Product weight in grams |
+| `Reached.on.Time_Y.N` | Binary target variable |
 
-No missing values or duplicate records were present in the raw data.
+The notebook also contains an identifier column, which is excluded from model features.
 
----
+## Tech Stack
 
-## 🔍 Key Insights from EDA
+- **Language:** Python
+- **Data manipulation:** Pandas, NumPy
+- **Visualization:** Matplotlib, Seaborn
+- **Machine learning:** Scikit-learn
+- **Environment:** Jupyter Notebook
 
-- 📉 **Weight matters most.** Shipments between **2,500–3,500g** are far more likely to arrive on time; anything **above 4,500g** is a strong late-delivery signal.
-- 💵 **Cost matters too.** Products priced **under $250** are delivered on time more consistently.
-- 🎁 **Discount is the strongest single signal.** Orders with **>10% discount** are much more likely to arrive on time; the **0–10% discount band** dominates the late-delivery cases.
-- 📞 **Customer care calls spike with cost and risk.** Higher-cost products trigger more inquiry calls — customers are proactively checking on shipments they're anxious about, which correlates with delay.
-- 🔁 **Loyalty predicts reliability.** Customers with more prior purchases see a higher rate of on-time delivery.
-- 🚢 **Logistics network is skewed but not predictive.** ~32% of all shipments originate from **Warehouse F** (suggesting proximity to a seaport) and ship predominantly via **Ship**, but warehouse and shipping mode show **no meaningful effect** on delivery outcomes.
-- 🚻 **Gender is a non-factor** — delivery performance is statistically identical across both groups.
+## Project Workflow
 
----
+1. **Data inspection:** Reviewed the dataset structure, column types, missing values, and duplicate records.
+2. **Exploratory data analysis:** Examined distributions and relationships between shipment features and delivery outcomes.
+3. **Preprocessing:** Removed the identifier from the predictors and encoded categorical features.
+4. **Train-test split:** Split the data into training and testing sets using an 80:20 ratio.
+5. **Model development:** Trained Logistic Regression, Decision Tree, Random Forest, and KNN classifiers.
+6. **Hyperparameter tuning:** Applied GridSearchCV with 5-fold cross-validation to the Decision Tree and Random Forest models.
+7. **Evaluation:** Compared accuracy, late-delivery precision, late-delivery recall, F1-score, and confusion matrices.
+8. **Business interpretation:** Identified patterns worth investigating and developed recommendations based on the analysis.
 
-## 🛠️ Methodology
+## Model Performance
 
-```
-Raw Data → Cleaning → EDA → Label Encoding → Train/Test Split (80/20)
-         → GridSearchCV Hyperparameter Tuning → Model Training
-         → Evaluation (Accuracy, Precision, Recall, F1, Confusion Matrix)
-         → Model Comparison
-```
+The following results are reported in the current project notebook/README. Precision, recall, and F1-score refer to the late-delivery class.
 
-**Preprocessing:** dropped the non-predictive `ID` column, label-encoded categorical features (`Warehouse_block`, `Mode_of_Shipment`, `Product_importance`, `Gender`).
-
-**Models trained** (each tuned via `GridSearchCV`, 5-fold CV):
-
-| Model | Tuned Hyperparameters |
-|---|---|
-| 🌲 Random Forest Classifier | `max_depth`, `min_samples_leaf`, `min_samples_split`, `criterion` |
-| 🌳 Decision Tree Classifier | `max_depth`, `min_samples_leaf`, `min_samples_split`, `criterion` |
-| 📈 Logistic Regression | default |
-| 📍 K-Nearest Neighbors | default |
-
----
-
-## 📊 Results
-
-| Model | Accuracy | Precision (Late) | Recall (Late) | F1 (Late) |
-|---|:---:|:---:|:---:|:---:|
-| 🏆 **Decision Tree Classifier** | **69%** | 0.95 | 0.49 | 0.65 |
-| Random Forest Classifier | 68% | 0.87 | 0.54 | 0.66 |
+| Model | Accuracy | Precision | Recall | F1-score |
+|---|---:|---:|---:|---:|
+| Decision Tree | 69% | 0.95 | 0.49 | 0.65 |
+| Random Forest | 68% | 0.87 | 0.54 | 0.66 |
 | K-Nearest Neighbors | 65% | 0.71 | 0.68 | 0.70 |
 | Logistic Regression | 63% | 0.69 | 0.67 | 0.68 |
 
-> The **Decision Tree Classifier** delivered the best overall accuracy, with very high precision on late-delivery predictions — meaning when it flags a shipment as "at risk," it's right the vast majority of the time. This makes it well suited for a proactive alerting workflow where minimizing false alarms matters.
+### How to interpret the results
 
----
+- The **Decision Tree** has the highest reported accuracy and late-delivery precision.
+- **KNN** has the highest reported F1-score and late-delivery recall among these models.
+- The Decision Tree's 0.49 recall means it identifies approximately 49% of actual late deliveries in the evaluated test set, based on the reported metric. Its high precision does not mean it catches most late shipments.
+- Model selection should depend on the business cost of missed delays versus unnecessary alerts, rather than accuracy alone.
 
-## 💡 Business Recommendations
+These results are baseline findings, not a guarantee of performance on future shipments.
 
-1. **Flag high-weight, high-cost orders at checkout** for expedited handling — these are the clearest early risk indicators.
-2. **Rethink the 0–10% discount tier** — this segment consistently under-performs on delivery timeliness and may warrant a logistics or fulfillment review.
-3. **Use customer care call volume as a leading indicator**, not just a support metric — a spike in inquiries on a given order is a signal worth acting on before it becomes a complaint.
-4. **Invest in warehouse network diversification** — over-reliance on Warehouse F creates concentration risk even though it isn't currently a predictor of delay.
+## Key Analytical Findings
 
----
+The exploratory analysis reported the following patterns:
 
-## ⚙️ Getting Started
+- **Product weight:** Delivery outcomes varied across weight ranges, making weight a useful variable to investigate.
+- **Product cost:** Product cost showed differences in delivery outcomes across price ranges.
+- **Discounts:** Delivery outcomes varied across discount bands.
+- **Customer-care calls:** Call volume was associated with shipment characteristics and delivery outcomes, suggesting a possible monitoring signal.
+- **Prior purchases:** Repeat-purchase history showed differences in delivery outcomes.
+- **Shipping and warehouse features:** The initial analysis reported limited differences in delivery outcomes across these categories.
+
+These are associations observed in the dataset; they do not establish that any feature causes delivery delays. Feature importance and statistical validation would be useful next steps.
+
+## Business Recommendations
+
+1. **Monitor potentially high-risk shipments:** Evaluate whether weight, product cost, and other available order features can help prioritize shipments for review.
+2. **Investigate discount-related patterns:** Examine whether differences across discount bands remain after controlling for other shipment characteristics.
+3. **Monitor customer-care activity:** Test whether increases in shipment-related inquiries can help identify orders needing proactive support.
+4. **Improve delay detection:** Explore class weighting, threshold tuning, and other approaches to increase recall for late deliveries.
+5. **Validate operational assumptions:** Investigate warehouse and shipping-mode performance using additional data before making logistics changes.
+
+## How to Run the Project
+
+### 1. Clone the repository
 
 ```bash
-# Clone the repository
-git clone https://github.com/<your-username>/ecommerce-delivery-prediction.git
-cd ecommerce-delivery-prediction
+git clone https://github.com/NIKIT0501/e-commerce-product-delivery-prediction.git
+cd e-commerce-product-delivery-prediction
+```
 
-# Install dependencies
+### 2. Install dependencies
+
+```bash
 pip install numpy pandas matplotlib seaborn scikit-learn jupyter
+```
 
-# Launch the notebook
+### 3. Launch Jupyter Notebook
+
+```bash
 jupyter notebook E-Commerce_Product_Delivery_Prediction.ipynb
 ```
 
+Open the notebook and run the cells in order. Keep `E_Commerce.csv` in the expected relative location used by the notebook.
+
+## Limitations and Future Improvements
+
+- **Improve recall:** Investigate class weighting, resampling methods, and decision-threshold tuning.
+- **Strengthen preprocessing:** Compare label encoding with one-hot encoding for nominal categorical variables.
+- **Prevent data leakage:** Verify that all preprocessing and tuning steps are fitted exclusively on training data and that the final test set remains untouched during model selection.
+- **Expand evaluation:** Add ROC-AUC and precision-recall curves, and report class distribution and confusion-matrix counts.
+- **Improve validation:** Compare stratified cross-validation and evaluate the model on a later time period if timestamps become available.
+- **Explore additional models:** Benchmark gradient-boosting algorithms against the existing baselines.
+- **Build a deployment workflow:** Package the selected model in an API and monitor prediction quality and data drift.
+- **Connect predictions to business value:** Estimate the costs of missed delays, unnecessary alerts, and potential interventions.
+
+## Repository Structure
+
+```text
+e-commerce-product-delivery-prediction/
+├── E-Commerce_Product_Delivery_Prediction.ipynb
+├── E-Commerce_Product_Delivery_Prediction.pdf
+├── E_Commerce.csv
+└── README.md
+```
+
+## Skills Demonstrated
+
+Python · Pandas · NumPy · Exploratory Data Analysis · Data Visualization · Data Preprocessing · Classification · Scikit-learn · Cross-Validation · Hyperparameter Tuning · Model Evaluation · Business Problem Solving
+
+## Author
+
+**Nikit**
+
+B.Tech — Production and Industrial Engineering  
+Motilal Nehru National Institute of Technology (MNNIT) Allahabad
+
+- GitHub: [NIKIT0501](https://github.com/NIKIT0501)
+- Project: [E-Commerce Product Delivery Prediction](https://github.com/NIKIT0501/e-commerce-product-delivery-prediction)
+
 ---
 
-## 🚀 Future Work
-
-- [ ] Address class imbalance with SMOTE / class weighting to improve recall on late deliveries
-- [ ] Engineer interaction features (e.g., weight × discount, cost × calls)
-- [ ] Benchmark gradient-boosted models (XGBoost, LightGBM, CatBoost)
-- [ ] Deploy the tuned model behind a lightweight API for real-time risk scoring at checkout
-- [ ] Build a monitoring dashboard tracking prediction drift over time
-
----
-
-## 🧰 Tech Stack
-
-`Python` · `NumPy` · `Pandas` · `Matplotlib` · `Seaborn` · `scikit-learn` · `Jupyter Notebook`
-
----
-
-## 👤 Author
-
-**NIKIT**
-Data Scientist | Machine Learning Practitioner
-
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0A66C2?style=flat-square&logo=linkedin&logoColor=white)](#)
-[![GitHub](https://img.shields.io/badge/GitHub-Follow-181717?style=flat-square&logo=github&logoColor=white)](#)
-[![Portfolio](https://img.shields.io/badge/Portfolio-Visit-000000?style=flat-square&logo=vercel&logoColor=white)](#)
-
-*Have a project or role in mind? Let's connect — I'm always open to discussing data science opportunities.*
-
----
-
-<div align="center">
-<sub>⭐ If you found this project useful, consider giving it a star!</sub>
-</div>
+*This project demonstrates an end-to-end machine learning workflow, from exploratory analysis to model evaluation and business interpretation.*
